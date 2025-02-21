@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise !</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let video = document.getElementById("fullscreen-video");
+
+            // Détection mobile
+            let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                video.muted = true; // Obligation de démarrer en muet sur mobile
+                video.play().then(() => {
+                    setTimeout(() => {
+                        video.muted = false; // Active le son après un court délai
+                    }, 500);
+                }).catch(error => {
+                    console.log("Lecture automatique bloquée, interaction requise :", error);
+                });
+            } else {
+                video.muted = false;
+                video.play().catch(error => {
+                    console.log("Lecture automatique bloquée, interaction requise :", error);
+                });
+            }
+
+            openFullscreen(video);
+        });
+
+        function openFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <video id="fullscreen-video" autoplay loop playsinline>
+        <source src="POUTRE.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture de vidéos.
+    </video>
+</body>
+
+</html>
